@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using GenericHostSample.PluginLoader;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -18,6 +17,7 @@ namespace GenericHostSample
             var host = new HostBuilder()
                 .ConfigureAssemblyScanning(assemblyScannerOptions =>
                 {
+                    assemblyScannerOptions.PluginPaths = new[] { @"..\..\..\..\..\GenericHostSample.Plugin1\bin\debug\netcoreapp3.0\GenericHostSample.Plugin1.dll" };
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {

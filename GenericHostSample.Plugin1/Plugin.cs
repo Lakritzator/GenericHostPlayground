@@ -1,20 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GenericHostSample.PluginLoader;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace GenericHostSample.Plugin1
 {
     /// <summary>
     /// Init class for the plugin
     /// </summary>
-    public class Plugin
+    public class Plugin : IPlugin
     {
-        /// <summary>
-        /// This defines all services
-        /// </summary>
-        /// <param name="services">IServiceCollection</param>
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureHost(IHostBuilder hostBuilder)
         {
-            services.AddHostedService<LifetimeEventsHostedService>();
-            services.AddHostedService<TimedHostedService>();
+            hostBuilder.ConfigureServices(serviceCollection =>
+            {
+                serviceCollection.AddHostedService<LifetimeEventsHostedService>();
+                serviceCollection.AddHostedService<TimedHostedService>();
+            });
         }
     }
 }
