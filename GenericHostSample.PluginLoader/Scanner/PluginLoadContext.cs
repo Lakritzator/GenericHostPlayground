@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace GenericHostSample.Scanner
+namespace GenericHostSample.PluginLoader.Scanner
 {
     internal class PluginLoadContext : AssemblyLoadContext
     {

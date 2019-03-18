@@ -1,10 +1,10 @@
 ﻿using System;
-using GenericHostSample.Scanner;
+using GenericHostSample.PluginLoader.Scanner;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
-namespace GenericHostSample
+namespace GenericHostSample.PluginLoader
 {
     public static class AssemblyLoaderExtension
     {
@@ -13,7 +13,7 @@ namespace GenericHostSample
             AssemblyScannerOptions options = new AssemblyScannerOptions();
             configureAction?.Invoke(options);
             hostBuilder.ConfigureServices((context, collection) => collection.TryAddSingleton(options));
-            return hostBuilder.ConfigureServices((context, collection) => collection.AddSingleton<IHostedService, AssemblyScanner>());
+            return hostBuilder.ConfigureServices((context, collection) => collection.AddHostedService<AssemblyScanner>());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using GenericHostSample.PluginLoader;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,7 +18,6 @@ namespace GenericHostSample
             var host = new HostBuilder()
                 .ConfigureAssemblyScanning(assemblyScannerOptions =>
                 {
-
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {
@@ -32,11 +32,6 @@ namespace GenericHostSample
                     configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
                     configApp.AddEnvironmentVariables(prefix: "PREFIX_");
                     configApp.AddCommandLine(args);
-                })
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddHostedService<LifetimeEventsHostedService>();
-                    services.AddHostedService<TimedHostedService>();
                 })
                 .ConfigureLogging((hostContext, configLogging) =>
                 {

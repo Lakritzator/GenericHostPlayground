@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GenericHostSample
+namespace GenericHostSample.Plugin1
 {
-    #region snippet1
     internal class LifetimeEventsHostedService : IHostedService
     {
         private readonly ILogger _logger;
@@ -52,5 +51,4 @@ namespace GenericHostSample
             // Perform post-stopped activities here
         }
     }
-    #endregion
 }
