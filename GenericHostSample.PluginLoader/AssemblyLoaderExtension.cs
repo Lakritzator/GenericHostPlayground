@@ -2,10 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using GenericHostSample.PluginLoader.Internals;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace GenericHostSample.PluginLoader
@@ -17,19 +14,23 @@ namespace GenericHostSample.PluginLoader
             AssemblyScannerOptions options = new AssemblyScannerOptions();
             configureAction?.Invoke(options);
 
-            foreach (var optionsPluginPath in options.PluginPaths)
+            if (options.PluginPaths != null)
             {
-                var plugin = LoadPlugin(options, optionsPluginPath);
-                if (plugin == null)
+                foreach (var optionsPluginPath in options.PluginPaths)
                 {
-                    continue;
+                    var plugin = LoadPlugin(options, optionsPluginPath);
+                    if (plugin == null)
+                    {
+                        continue;
+                    }
+                    plugin.ConfigureHost(hostBuilder);
                 }
-                plugin.ConfigureHost(hostBuilder);
             }
 
             if (options.Scan)
             {
-                foreach (var optionsPluginPath in Directory.EnumerateFiles(options.Root, options.PluginPattern, SearchOption.AllDirectories))
+                var pluginFiles = Directory.EnumerateFiles(options.Root, options.PluginPattern, SearchOption.AllDirectories);
+                foreach (var optionsPluginPath in pluginFiles)
                 {
                     var plugin = LoadPlugin(options, optionsPluginPath);
                     if (plugin == null)

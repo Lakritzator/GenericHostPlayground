@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 
 namespace GenericHostSample.PluginLoader
 {
@@ -13,7 +14,7 @@ namespace GenericHostSample.PluginLoader
         /// <summary>
         /// Root of the location where the scanning takes place, default the location of the executing assembly
         /// </summary>
-        public string Root { get; set; } = Assembly.GetExecutingAssembly().Location;
+        public string Root { get; set; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         /// <summary>
         /// Enable / disable plugin scanning

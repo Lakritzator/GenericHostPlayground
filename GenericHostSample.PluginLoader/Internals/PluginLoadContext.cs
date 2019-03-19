@@ -15,6 +15,13 @@ namespace GenericHostSample.PluginLoader.Internals
 
         protected override Assembly Load(AssemblyName assemblyName)
         {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.FullName.Equals(assemblyName.FullName))
+                {
+                    return assembly;
+                }
+            }
             string assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
             if (assemblyPath != null)
             {
