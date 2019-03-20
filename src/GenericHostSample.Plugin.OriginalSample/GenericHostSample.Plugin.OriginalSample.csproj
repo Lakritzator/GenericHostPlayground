@@ -8,6 +8,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GenericHostSample.PluginLoader\GenericHostSample.PluginLoader.csproj" />
+    <ProjectReference Include="..\Dapplo.Extensions.Plugins\Dapplo.Extensions.Plugins.csproj" />
   </ItemGroup>
 </Project>

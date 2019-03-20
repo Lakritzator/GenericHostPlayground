@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,18 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="**\*.json" Exclude="bin\**\*;obj\**\*" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings.Development.json" />
-    <None Remove="appsettings.json" />
-    <None Remove="appsettings.Production.json" />
-    <None Remove="hostsettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GenericHostSample.PluginLoader\GenericHostSample.PluginLoader.csproj" />
+    <ProjectReference Include="..\Dapplo.Extensions.Plugins\Dapplo.Extensions.Plugins.csproj" />
   </ItemGroup>
 
 </Project>
