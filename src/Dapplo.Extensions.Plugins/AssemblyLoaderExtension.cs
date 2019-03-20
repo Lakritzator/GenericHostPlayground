@@ -5,7 +5,7 @@ using System.Reflection;
 using GenericHostSample.PluginLoader.Internals;
 using Microsoft.Extensions.Hosting;
 
-namespace GenericHostSample.PluginLoader
+namespace Dapplo.Extensions.Plugins
 {
     public static class AssemblyLoaderExtension
     {
@@ -65,7 +65,7 @@ namespace GenericHostSample.PluginLoader
             var assembly = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
 
             var interfaceType = typeof(IPlugin);
-            foreach(var type in assembly.GetExportedTypes())
+            foreach (var type in assembly.GetExportedTypes())
             {
                 if (!type.GetInterfaces().Contains(interfaceType))
                 {

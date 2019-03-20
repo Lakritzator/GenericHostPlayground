@@ -1,6 +1,6 @@
 ﻿<Project>
 
-  <Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="$(MSBuildProjectName.Contains('.Plugin')) And !$(MSBuildProjectName.Contains('PluginLoader'))">
+  <Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="$(MSBuildProjectName.Contains('.Plugin.'))">
     <Exec Command="
     mkdir &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;
     xcopy /q /y /d &quot;$(TargetDir)$(TargetName).*&quot; &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;

@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 
-namespace GenericHostSample.PluginLoader
+namespace Dapplo.Extensions.Plugins
 {
     public interface IPlugin
     {

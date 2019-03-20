@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GenericHostSample.Forms
+namespace GenericHostSample.FormsDemo
 {
     /// <summary>
     /// Listens for Ctrl+C or SIGTERM and initiates shutdown.

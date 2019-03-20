@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GenericHostSample.Plugin1
+namespace GenericHostSample.Plugin.OriginalSample
 {
     internal class TimedHostedService : IHostedService, IDisposable
     {

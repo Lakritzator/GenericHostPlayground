@@ -2,13 +2,13 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GenericHostSample.PluginLoader;
+using Dapplo.Extensions.Plugins;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GenericHostSample.Forms
+namespace GenericHostSample.FormsDemo
 {
     public static class Program
     {

@@ -1,8 +1,8 @@
-﻿using GenericHostSample.PluginLoader;
+﻿using Dapplo.Extensions.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace GenericHostSample.Plugin1
+namespace GenericHostSample.Plugin.OriginalSample
 {
     /// <summary>
     /// Init class for the plugin

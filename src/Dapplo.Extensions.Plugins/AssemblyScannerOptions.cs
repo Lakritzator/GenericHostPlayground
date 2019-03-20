@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace GenericHostSample.PluginLoader
+namespace Dapplo.Extensions.Plugins
 {
     public class AssemblyScannerOptions
     {
@@ -20,7 +20,7 @@ namespace GenericHostSample.PluginLoader
         /// Enable / disable plugin scanning
         /// </summary>
         public bool Scan { get; set; }
-        
+
         /// <summary>
         /// The pattern to scan for plugins
         /// </summary>
@@ -29,6 +29,6 @@ namespace GenericHostSample.PluginLoader
         /// <summary>
         /// The relative paths for the plugins
         /// </summary>
-        public string [] PluginPaths { get; set; }
+        public string[] PluginPaths { get; set; }
     }
 }
