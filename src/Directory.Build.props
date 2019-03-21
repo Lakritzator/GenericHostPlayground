@@ -1,11 +1,11 @@
 ﻿<Project>
 
-  <Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="$(MSBuildProjectName.Contains('.Plugin.'))">
+  <Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="$(MSBuildProjectName.Contains('Demo'))">
     <Exec Command="
-    mkdir &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;
-    xcopy /q /y /d &quot;$(TargetDir)$(TargetName).*&quot; &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;
-    xcopy /q /y /d &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;
-    xcopy /q /y /d &quot;$(TargetDir)*.pdb&quot; &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;
-    xcopy /q /y /d &quot;$(TargetDir)*.xml&quot; &quot;$(SolutionDir)$(SolutionName)\$(OutDir)\$(TargetName)&quot;&#xD;&#xA;&#xD;&#xA;" />
+    mkdir &quot;$(TargetDir)Plugins&quot;&#xD;&#xA;
+    xcopy /q /y /d &quot;$(SolutionDir)GenericHostSample.Plugin.OriginalSample\$(OutDir)*Plugin.*.dll&quot; &quot;$(TargetDir)Plugins&quot;&#xD;&#xA;
+    
+    xcopy /q /y /d &quot;$(SolutionDir)GenericHostSample.Plugin.OriginalSample\$(OutDir)*Plugin.*.pdb&quot; &quot;$(TargetDir)Plugins&quot;&#xD;&#xA;
+    " />
   </Target>
 </Project>
