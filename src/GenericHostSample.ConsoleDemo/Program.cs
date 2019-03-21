@@ -15,10 +15,9 @@ namespace GenericHostSample.ConsoleDemo
         public static async Task Main(string[] args)
         {
             var host = new HostBuilder()
-                .ConfigureAssemblyScanning(assemblyScannerOptions =>
+                .AddPlugins(matcher =>
                 {
-                    assemblyScannerOptions.PluginPattern = "GenericHostSample.Plugin.OriginalSample.dll";
-                    assemblyScannerOptions.Scan = true;
+                    matcher.AddInclude(@"plugins\*.Plugin.*.dll");
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {

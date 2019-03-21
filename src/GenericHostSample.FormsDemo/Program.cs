@@ -23,10 +23,9 @@ namespace GenericHostSample.FormsDemo
             Application.Run(new Form1());
 
             var host = new HostBuilder()
-                .ConfigureAssemblyScanning(assemblyScannerOptions =>
+                .AddPlugins(matcher =>
                 {
-                    assemblyScannerOptions.PluginPattern = "GenericHostSample.Plugin1.dll";
-                    assemblyScannerOptions.Scan = true;
+                    matcher.AddInclude(@"plugins\*.Plugin.*.dll");
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {

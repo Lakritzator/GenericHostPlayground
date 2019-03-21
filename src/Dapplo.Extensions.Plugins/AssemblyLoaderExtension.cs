@@ -3,64 +3,53 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using GenericHostSample.PluginLoader.Internals;
+using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.Hosting;
 
 namespace Dapplo.Extensions.Plugins
 {
     public static class AssemblyLoaderExtension
     {
-        public static IHostBuilder ConfigureAssemblyScanning(this IHostBuilder hostBuilder, Action<AssemblyScannerOptions> configureAction = null)
+        /// <summary>
+        /// This enables scanning with Plugins
+        /// </summary>
+        /// <param name="hostBuilder">IHostBuilder</param>
+        /// <param name="configureAction">Action to configure where the plugins come from</param>
+        /// <param name="scanRoot">string with root directory to scan the plugins, default the location of the exeutable</param>
+        /// <returns>IHostBuilder for fluently calling</returns>
+        public static IHostBuilder AddPlugins(this IHostBuilder hostBuilder, Action<Matcher> configureAction, string scanRoot = null)
         {
-            AssemblyScannerOptions options = new AssemblyScannerOptions();
-            configureAction?.Invoke(options);
+            var matcher = new Matcher();
+            configureAction?.Invoke(matcher);
+            scanRoot ??= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            if (options.PluginPaths != null)
+            foreach (var pluginPath in matcher.GetResultsInFullPath(scanRoot))
             {
-                foreach (var optionsPluginPath in options.PluginPaths)
+                var plugin = LoadPlugin(pluginPath);
+                if (plugin == null)
                 {
-                    var plugin = LoadPlugin(options, optionsPluginPath);
-                    if (plugin == null)
-                    {
-                        continue;
-                    }
-                    plugin.ConfigureHost(hostBuilder);
+                    continue;
                 }
+                plugin.ConfigureHost(hostBuilder);
             }
 
-            if (options.Scan)
-            {
-                var pluginFiles = Directory.EnumerateFiles(options.Root, options.PluginPattern, SearchOption.AllDirectories);
-                foreach (var optionsPluginPath in pluginFiles)
-                {
-                    var plugin = LoadPlugin(options, optionsPluginPath);
-                    if (plugin == null)
-                    {
-                        continue;
-                    }
-                    plugin.ConfigureHost(hostBuilder);
-                }
-
-            }
             return hostBuilder;
         }
 
-
-        private static IPlugin LoadPlugin(AssemblyScannerOptions options, string relativePath)
+        /// <summary>
+        /// Helper method to load an assembly which contains a single plugin
+        /// </summary>
+        /// <param name="pluginLocation">string</param>
+        /// <returns>IPlugin</returns>
+        private static IPlugin LoadPlugin(string pluginLocation)
         {
-            string pluginLocation = Path.GetFullPath(Path.Combine(options.Root, relativePath.Replace('\\', Path.DirectorySeparatorChar)));
             if (!File.Exists(pluginLocation))
             {
-                if (!options.SuppressMessages)
-                {
-                    Console.WriteLine($"Can't find: {pluginLocation}");
-                }
+                Console.WriteLine($"Can't find: {pluginLocation}");
                 return null;
             }
-            if (!options.SuppressMessages)
-            {
-                Console.WriteLine($"Loading plugin from: {pluginLocation}");
-            }
-
+            Console.WriteLine($"Loading plugin from: {pluginLocation}");
+ 
             PluginLoadContext loadContext = new PluginLoadContext(pluginLocation);
             var assembly = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
 
