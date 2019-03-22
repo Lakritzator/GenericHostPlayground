@@ -4,6 +4,11 @@ using System.Runtime.Loader;
 
 namespace GenericHostSample.PluginLoader.Internals
 {
+    /// <summary>
+    /// This AssemblyLoadContext uses an AssemblyDependencyResolver as described here: https://devblogs.microsoft.com/dotnet/announcing-net-core-3-preview-3/
+    /// Before loading an assembly, the current domain is checked if this assembly was not already loaded, if so this is returned.
+    /// This way the Assemblies already loaded by the application are available to all the plugins and can provide interaction.
+    /// </summary>
     internal class PluginLoadContext : AssemblyLoadContext
     {
         private readonly AssemblyDependencyResolver _resolver;
@@ -13,6 +18,7 @@ namespace GenericHostSample.PluginLoader.Internals
             _resolver = new AssemblyDependencyResolver(pluginPath);
         }
 
+        /// <inheritdoc />
         protected override Assembly Load(AssemblyName assemblyName)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -31,6 +37,7 @@ namespace GenericHostSample.PluginLoader.Internals
             return null;
         }
 
+        /// <inheritdoc />
         protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
         {
             string libraryPath = _resolver.ResolveUnmanagedDllToPath(unmanagedDllName);

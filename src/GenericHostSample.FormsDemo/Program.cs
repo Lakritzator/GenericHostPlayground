@@ -25,7 +25,7 @@ namespace GenericHostSample.FormsDemo
             var host = new HostBuilder()
                 .AddPlugins(matcher =>
                 {
-                    matcher.AddInclude(@"plugins\*.Plugin.*.dll");
+                    matcher.AddInclude(@"..\..\..\..\**\bin\**\*.Plugin.*.dll");
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {

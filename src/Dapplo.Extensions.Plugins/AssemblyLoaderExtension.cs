@@ -8,6 +8,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace Dapplo.Extensions.Plugins
 {
+    /// <summary>
+    /// Extensions for loading plugins
+    /// </summary>
     public static class AssemblyLoaderExtension
     {
         /// <summary>

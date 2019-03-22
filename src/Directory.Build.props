@@ -1,11 +1,3 @@
 ﻿<Project>
 
-  <Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="$(MSBuildProjectName.Contains('Demo'))">
-    <Exec Command="
-    mkdir &quot;$(TargetDir)Plugins&quot;&#xD;&#xA;
-    xcopy /q /y /d &quot;$(SolutionDir)GenericHostSample.Plugin.OriginalSample\$(OutDir)*Plugin.*.dll&quot; &quot;$(TargetDir)Plugins&quot;&#xD;&#xA;
-    
-    xcopy /q /y /d &quot;$(SolutionDir)GenericHostSample.Plugin.OriginalSample\$(OutDir)*Plugin.*.pdb&quot; &quot;$(TargetDir)Plugins&quot;&#xD;&#xA;
-    " />
-  </Target>
 </Project>
