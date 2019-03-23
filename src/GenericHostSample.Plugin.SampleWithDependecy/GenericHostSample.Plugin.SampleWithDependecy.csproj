@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapplo.HttpExtensions" Version="0.9.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dapplo.Extensions.Plugins\Dapplo.Extensions.Plugins.csproj" />
+  </ItemGroup>
+
+</Project>

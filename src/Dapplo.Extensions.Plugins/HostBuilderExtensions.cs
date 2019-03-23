@@ -5,14 +5,33 @@ using System.Reflection;
 using GenericHostSample.PluginLoader.Internals;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using GenericHostSample.Plugin.OriginalSample;
 
 namespace Dapplo.Extensions.Plugins
 {
     /// <summary>
     /// Extensions for loading plugins
     /// </summary>
-    public static class AssemblyLoaderExtension
+    public static class HostBuilderExtensions
     {
+        /// <summary>
+        /// This enables scanning with Plugins
+        /// </summary>
+        /// <param name="hostBuilder">IHostBuilder</param>
+        /// <param name="configureAction">Action to configure where the plugins come from</param>
+        /// <param name="scanRoot">string with root directory to scan the plugins, default the location of the exeutable</param>
+        /// <returns>IHostBuilder for fluently calling</returns>
+        public static IHostBuilder PreventMultipleInstances(this IHostBuilder hostBuilder, string mutexId, bool global = false)
+        {
+            hostBuilder.ConfigureServices(serviceCollection =>
+            {
+                serviceCollection.AddSingleton(ResourceMutex.Create(null, mutexId, null, global));
+                serviceCollection.AddHostedService<MutexLifetimeService>();
+            });
+            return hostBuilder;
+        }
+
         /// <summary>
         /// This enables scanning with Plugins
         /// </summary>
