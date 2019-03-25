@@ -9,13 +9,10 @@ namespace GenericHostSample.Plugin.OriginalSample
     /// </summary>
     public class Plugin : IPlugin
     {
-        public void ConfigureHost(IHostBuilder hostBuilder)
+        public void ConfigureHost(HostBuilderContext hostBuilderContext, IServiceCollection serviceCollection)
         {
-            hostBuilder.ConfigureServices(serviceCollection =>
-            {
-                serviceCollection.AddHostedService<LifetimeEventsHostedService>();
-                serviceCollection.AddHostedService<TimedHostedService>();
-            });
+            serviceCollection.AddHostedService<LifetimeEventsHostedService>();
+            serviceCollection.AddHostedService<TimedHostedService>();
         }
     }
 }

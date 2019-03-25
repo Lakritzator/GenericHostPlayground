@@ -6,12 +6,9 @@ namespace GenericHostSample.Plugin.SampleWithDependecy
 {
     public class Plugin : IPlugin
     {
-        public void ConfigureHost(IHostBuilder hostBuilder)
+        public void ConfigureHost(HostBuilderContext hostBuilderContext, IServiceCollection serviceCollection)
         {
-            hostBuilder.ConfigureServices(serviceCollection =>
-            {
-                serviceCollection.AddHostedService<BackgroundService>();
-            });
+            serviceCollection.AddHostedService<BackgroundService>();
         }
     }
 }

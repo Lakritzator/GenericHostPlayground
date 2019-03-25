@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Dapplo.Extensions.Plugins;
 using Microsoft.Extensions.Configuration;
@@ -15,9 +16,12 @@ namespace GenericHostSample.ConsoleDemo
         public static async Task Main(string[] args)
         {
             var host = new HostBuilder()
+                // Specify the location from where the dll's are "globbed"
+                .UseContentRoot(@"..\..\..\..\")
+                // Add the plugins which can be found with the specified globs
                 .AddPlugins(matcher =>
                 {
-                    matcher.AddInclude(@"..\..\..\..\**\bin\**\*.Plugin.*.dll");
+                    matcher.AddInclude(@"**\bin\**\*.Plugin.*.dll");
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {
@@ -41,6 +45,7 @@ namespace GenericHostSample.ConsoleDemo
                 .UseConsoleLifetime()
                 .Build();
 
+            Console.WriteLine("Run!");
             await host.RunAsync();
         }
     }

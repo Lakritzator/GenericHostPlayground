@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Dapplo.Extensions.Plugins
 {
@@ -11,7 +12,8 @@ namespace Dapplo.Extensions.Plugins
         /// Implementing this method allows a plugin to configure the host.
         /// This makes it possible to add services etc
         /// </summary>
-        /// <param name="hostBuilder">IHostBuilder</param>
-        void ConfigureHost(IHostBuilder hostBuilder);
+        /// <param name="hostBuilderContext">HostBuilderContext</param>
+        /// <param name="serviceCollection">IServiceCollection</param>
+        void ConfigureHost(HostBuilderContext hostBuilderContext, IServiceCollection serviceCollection);
     }
 }

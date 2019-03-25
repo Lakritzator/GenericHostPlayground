@@ -23,9 +23,12 @@ namespace GenericHostSample.FormsDemo
             Application.Run(new Form1());
 
             var host = new HostBuilder()
+                // Specify the location from where the dll's are "globbed"
+                .UseContentRoot(@"..\..\..\..\")
+                // Add the plugins which can be found with the specified globs
                 .AddPlugins(matcher =>
                 {
-                    matcher.AddInclude(@"..\..\..\..\**\bin\**\*.Plugin.*.dll");
+                    matcher.AddInclude(@"**\bin\**\*.Plugin.*.dll");
                 })
                 .ConfigureHostConfiguration(configHost =>
                 {

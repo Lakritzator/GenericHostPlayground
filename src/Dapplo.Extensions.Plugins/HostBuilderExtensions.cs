@@ -37,23 +37,26 @@ namespace Dapplo.Extensions.Plugins
         /// </summary>
         /// <param name="hostBuilder">IHostBuilder</param>
         /// <param name="configureAction">Action to configure where the plugins come from</param>
-        /// <param name="scanRoot">string with root directory to scan the plugins, default the location of the exeutable</param>
         /// <returns>IHostBuilder for fluently calling</returns>
-        public static IHostBuilder AddPlugins(this IHostBuilder hostBuilder, Action<Matcher> configureAction, string scanRoot = null)
+        public static IHostBuilder AddPlugins(this IHostBuilder hostBuilder, Action<Matcher> configureAction)
         {
-            var matcher = new Matcher();
-            configureAction?.Invoke(matcher);
-            scanRoot ??= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            foreach (var pluginPath in matcher.GetResultsInFullPath(scanRoot))
+            hostBuilder.ConfigureServices((hostContext, serviceCollection) =>
             {
-                var plugin = LoadPlugin(pluginPath);
-                if (plugin == null)
+                
+                var matcher = new Matcher();
+                configureAction?.Invoke(matcher);
+                var scanRoot = hostContext.HostingEnvironment.ContentRootPath ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                 
+                foreach (var pluginPath in matcher.GetResultsInFullPath(scanRoot))
                 {
-                    continue;
+                    var plugin = LoadPlugin(pluginPath);
+                    if (plugin == null)
+                    {
+                        continue;
+                    }
+                    plugin.ConfigureHost(hostContext, serviceCollection);
                 }
-                plugin.ConfigureHost(hostBuilder);
-            }
+            });
 
             return hostBuilder;
         }

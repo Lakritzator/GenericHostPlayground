@@ -11,6 +11,7 @@ namespace GenericHostSample.Plugin.SampleWithDependecy
     {
         private readonly ILogger _logger;
         private Timer _timer;
+        private readonly Uri _uri = new Uri("https://nu.nl");
 
         public BackgroundService(ILogger<BackgroundService> logger)
         {
@@ -32,8 +33,8 @@ namespace GenericHostSample.Plugin.SampleWithDependecy
 
             Task.Run(async () =>
             {
-                var result = await (new Uri("https://nu.nl").GetAsAsync<string>());
-                _logger.LogInformation(result.Substring(0,40));
+                var result = await (_uri.GetAsAsync<string>());
+                _logger.LogInformation("{0} : {1}", _uri, result.Substring(0,40));
             });
         }
 
