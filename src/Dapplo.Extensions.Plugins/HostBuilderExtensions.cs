@@ -7,6 +7,7 @@ using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using GenericHostSample.Plugin.OriginalSample;
+using Dapplo.Extensions.Plugins.Internals;
 
 namespace Dapplo.Extensions.Plugins
 {
@@ -16,17 +17,22 @@ namespace Dapplo.Extensions.Plugins
     public static class HostBuilderExtensions
     {
         /// <summary>
-        /// This enables scanning with Plugins
+        /// Prevent that an application runs multiple times
         /// </summary>
         /// <param name="hostBuilder">IHostBuilder</param>
         /// <param name="configureAction">Action to configure where the plugins come from</param>
         /// <param name="scanRoot">string with root directory to scan the plugins, default the location of the exeutable</param>
         /// <returns>IHostBuilder for fluently calling</returns>
-        public static IHostBuilder PreventMultipleInstances(this IHostBuilder hostBuilder, string mutexId, bool global = false)
+        public static IHostBuilder ForceSingleInstance(this IHostBuilder hostBuilder, string mutexId, Action<IHostingEnvironment> whenNotFirstInstance = null, bool global = true)
         {
-            hostBuilder.ConfigureServices(serviceCollection =>
+            hostBuilder.ConfigureServices((hostContext, serviceCollection) =>
             {
-                serviceCollection.AddSingleton(ResourceMutex.Create(null, mutexId, null, global));
+                serviceCollection.AddSingleton(new MutexConfig
+                {
+                    MutexId = mutexId,
+                    WhenNotFirstInstance = whenNotFirstInstance,
+                    IsGlobal = global
+                });
                 serviceCollection.AddHostedService<MutexLifetimeService>();
             });
             return hostBuilder;
@@ -42,7 +48,6 @@ namespace Dapplo.Extensions.Plugins
         {
             hostBuilder.ConfigureServices((hostContext, serviceCollection) =>
             {
-                
                 var matcher = new Matcher();
                 configureAction?.Invoke(matcher);
                 var scanRoot = hostContext.HostingEnvironment.ContentRootPath ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -56,6 +61,22 @@ namespace Dapplo.Extensions.Plugins
                     }
                     plugin.ConfigureHost(hostContext, serviceCollection);
                 }
+            });
+
+            return hostBuilder;
+        }
+
+        /// <summary>
+        /// This enables scanning with Plugins
+        /// </summary>
+        /// <param name="hostBuilder">IHostBuilder</param>
+        /// <param name="configureAction">Action to configure where the plugins come from</param>
+        /// <returns>IHostBuilder for fluently calling</returns>
+        public static IHostBuilder AddPlugins(this IHostBuilder hostBuilder, params string[] globs)
+        {
+            hostBuilder.AddPlugins(matcher =>
+            {
+                matcher.AddIncludePatterns(globs);
             });
 
             return hostBuilder;

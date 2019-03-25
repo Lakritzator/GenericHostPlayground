@@ -71,6 +71,7 @@ namespace Dapplo.Extensions.Plugins
             {
                 throw new ArgumentNullException(nameof(mutexId));
             }
+            logger ??= new LoggerFactory().CreateLogger<ResourceMutex>();
             var applicationMutex = new ResourceMutex(logger, (global ? @"Global\" : @"Local\") + mutexId, resourceName);
             applicationMutex.Lock();
             return applicationMutex;

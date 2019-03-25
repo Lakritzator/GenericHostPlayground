@@ -12,3 +12,6 @@ I didn't check all possible combinations, but I have created 2 plugins:
 2. And one plugin which just uses a dependency, to see if this works
 
 There are a lot of things I want to try out, so this is really a prototype.
+
+I've added a ForceSingleInstance, which uses a Mutex to prevent the application running twice, it will a shutdown of the application before it really starts.
+(Still need to check if this works as expected)

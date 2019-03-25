@@ -16,13 +16,6 @@ namespace GenericHostSample.ConsoleDemo
         public static async Task Main(string[] args)
         {
             var host = new HostBuilder()
-                // Specify the location from where the dll's are "globbed"
-                .UseContentRoot(@"..\..\..\..\")
-                // Add the plugins which can be found with the specified globs
-                .AddPlugins(matcher =>
-                {
-                    matcher.AddInclude(@"**\bin\**\*.Plugin.*.dll");
-                })
                 .ConfigureHostConfiguration(configHost =>
                 {
                     configHost.SetBasePath(Directory.GetCurrentDirectory());
@@ -42,6 +35,15 @@ namespace GenericHostSample.ConsoleDemo
                     configLogging.AddConsole();
                     configLogging.AddDebug();
                 })
+                .ForceSingleInstance("{B9CE32C0-59AE-4AF0-BE39-5329AAFF4BE8}", (hostingEnvironment) => {
+                    // This is called when a second instance is started
+                    Console.WriteLine($"Application {hostingEnvironment.ApplicationName} already running.");
+                    Console.ReadKey();
+                })
+                // Specify the location from where the dll's are "globbed"
+                .UseContentRoot(@"..\..\..\..\")
+                // Add the plugins which can be found with the specified globs
+                .AddPlugins(@"**\bin\**\*.Plugin.*.dll")
                 .UseConsoleLifetime()
                 .Build();
 

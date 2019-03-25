@@ -23,6 +23,7 @@ namespace GenericHostSample.FormsDemo
             Application.Run(new Form1());
 
             var host = new HostBuilder()
+                .ForceSingleInstance("{B9CE32C0-59AE-4AF0-BE39-5329AAFF4BE8}")
                 // Specify the location from where the dll's are "globbed"
                 .UseContentRoot(@"..\..\..\..\")
                 // Add the plugins which can be found with the specified globs
