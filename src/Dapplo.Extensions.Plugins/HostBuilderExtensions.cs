@@ -2,11 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using GenericHostSample.PluginLoader.Internals;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using GenericHostSample.Plugin.OriginalSample;
 using Dapplo.Extensions.Plugins.Internals;
 
 namespace Dapplo.Extensions.Plugins
@@ -14,30 +11,8 @@ namespace Dapplo.Extensions.Plugins
     /// <summary>
     /// Extensions for loading plugins
     /// </summary>
-    public static class HostBuilderExtensions
+    public static class HostBuilderPluginExtensions
     {
-        /// <summary>
-        /// Prevent that an application runs multiple times
-        /// </summary>
-        /// <param name="hostBuilder">IHostBuilder</param>
-        /// <param name="configureAction">Action to configure where the plugins come from</param>
-        /// <param name="scanRoot">string with root directory to scan the plugins, default the location of the exeutable</param>
-        /// <returns>IHostBuilder for fluently calling</returns>
-        public static IHostBuilder ForceSingleInstance(this IHostBuilder hostBuilder, string mutexId, Action<IHostingEnvironment> whenNotFirstInstance = null, bool global = true)
-        {
-            hostBuilder.ConfigureServices((hostContext, serviceCollection) =>
-            {
-                serviceCollection.AddSingleton(new MutexConfig
-                {
-                    MutexId = mutexId,
-                    WhenNotFirstInstance = whenNotFirstInstance,
-                    IsGlobal = global
-                });
-                serviceCollection.AddHostedService<MutexLifetimeService>();
-            });
-            return hostBuilder;
-        }
-
         /// <summary>
         /// This enables scanning with Plugins
         /// </summary>
@@ -70,7 +45,7 @@ namespace Dapplo.Extensions.Plugins
         /// This enables scanning with Plugins
         /// </summary>
         /// <param name="hostBuilder">IHostBuilder</param>
-        /// <param name="configureAction">Action to configure where the plugins come from</param>
+        /// <param name="globs">The glob patterns to match plugins with, they are located from the ContentRoot</param>
         /// <returns>IHostBuilder for fluently calling</returns>
         public static IHostBuilder AddPlugins(this IHostBuilder hostBuilder, params string[] globs)
         {
@@ -96,7 +71,7 @@ namespace Dapplo.Extensions.Plugins
             }
             Console.WriteLine($"Loading plugin from: {pluginLocation}");
  
-            PluginLoadContext loadContext = new PluginLoadContext(pluginLocation);
+            var loadContext = new PluginLoadContext(pluginLocation);
             var assembly = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
 
             var interfaceType = typeof(IPlugin);

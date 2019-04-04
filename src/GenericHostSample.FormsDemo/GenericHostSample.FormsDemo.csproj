@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dapplo.Extensions.Application\Dapplo.Extensions.Application.csproj" />
     <ProjectReference Include="..\Dapplo.Extensions.Plugins\Dapplo.Extensions.Plugins.csproj" />
   </ItemGroup>
 

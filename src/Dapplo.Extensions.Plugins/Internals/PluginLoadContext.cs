@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace GenericHostSample.PluginLoader.Internals
+namespace Dapplo.Extensions.Plugins.Internals
 {
     /// <summary>
     /// This AssemblyLoadContext uses an AssemblyDependencyResolver as described here: https://devblogs.microsoft.com/dotnet/announcing-net-core-3-preview-3/

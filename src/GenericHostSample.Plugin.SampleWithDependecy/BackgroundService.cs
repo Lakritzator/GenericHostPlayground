@@ -33,8 +33,15 @@ namespace GenericHostSample.Plugin.SampleWithDependecy
 
             Task.Run(async () =>
             {
-                var result = await (_uri.GetAsAsync<string>());
-                _logger.LogInformation("{0} : {1}", _uri, result.Substring(0,40));
+                try
+                {
+                    var result = await (_uri.GetAsAsync<string>());
+                    _logger.LogInformation("{0} : {1}", _uri, result.Substring(0, 40));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Couldn't connect to {0}", _uri);
+                }
             });
         }
 

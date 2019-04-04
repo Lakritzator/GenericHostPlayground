@@ -1,12 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Dapplo.Extensions.Plugins;
-using Dapplo.Extensions.Plugins.Internals;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GenericHostSample.Plugin.OriginalSample
+namespace Dapplo.Extensions.Application.Internal
 {
+    /// <summary>
+    /// This maintains the mutex lifetime
+    /// </summary>
     internal class MutexLifetimeService : IHostedService
     {
         private readonly ILogger _logger;

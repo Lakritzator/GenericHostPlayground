@@ -26,8 +26,12 @@
 using System;
 using System.Threading;
 using Microsoft.Extensions.Logging;
+#if NET472
+using System.Security.AccessControl;
+using System.Security.Principal;
+#endif
 
-namespace Dapplo.Extensions.Plugins
+namespace Dapplo.Extensions.Application
 {
     /// <summary>
     ///     This protects your resources or application from running more than once
@@ -45,6 +49,7 @@ namespace Dapplo.Extensions.Plugins
         /// <summary>
         ///     Private constructor
         /// </summary>
+        /// <param name="logger">ILogger</param>
         /// <param name="mutexId">string with a unique Mutex ID</param>
         /// <param name="resourceName">optional name for the resource</param>
         private ResourceMutex(ILogger logger, string mutexId, string resourceName = null)
@@ -62,16 +67,17 @@ namespace Dapplo.Extensions.Plugins
         /// <summary>
         ///     Create a ResourceMutex for the specified mutex id and resource-name
         /// </summary>
+        /// <param name="logger">ILogger</param>
         /// <param name="mutexId">ID of the mutex, preferably a Guid as string</param>
-        /// <param name="resourceName">Name of the resource to lock, e.g your application name, usefull for logs</param>
-        /// <param name="global">true to have a global mutex see: https://msdn.microsoft.com/en-us/library/bwe34f1k.aspx </param>
+        /// <param name="resourceName">Name of the resource to lock, e.g your application name, useful for logs</param>
+        /// <param name="global">true to have a global mutex see: https://msdn.microsoft.com/en-us/library/bwe34f1k.aspx</param>
         public static ResourceMutex Create(ILogger logger, string mutexId, string resourceName = null, bool global = false)
         {
             if (mutexId == null)
             {
                 throw new ArgumentNullException(nameof(mutexId));
             }
-            logger ??= new LoggerFactory().CreateLogger<ResourceMutex>();
+            logger = logger ?? new LoggerFactory().CreateLogger<ResourceMutex>();
             var applicationMutex = new ResourceMutex(logger, (global ? @"Global\" : @"Local\") + mutexId, resourceName);
             applicationMutex.Lock();
             return applicationMutex;
@@ -92,7 +98,7 @@ namespace Dapplo.Extensions.Plugins
             // check whether there's an local instance running already, but use local so this works in a multi-user environment
             try
             {
-#if NET461
+#if NET472
                 // Added Mutex Security, hopefully this prevents the UnauthorizedAccessException more gracefully
                 var sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
                 var mutexsecurity = new MutexSecurity();

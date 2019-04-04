@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dapplo.Extensions.Application\Dapplo.Extensions.Application.csproj" />
     <ProjectReference Include="..\Dapplo.Extensions.Plugins\Dapplo.Extensions.Plugins.csproj" />
   </ItemGroup>
 
